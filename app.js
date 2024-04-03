@@ -12,7 +12,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 const restrictAccess = (req, res, next) => {
   const origin = req.headers.origin || req.headers.referer;
-  console.log(`Origin: ${origin}`);
+
   const allowedOrigins = [
     "https://fife-porpoise-xrrg.squarespace.com",
     "https://tfoa-test.onrender.com",
@@ -20,17 +20,10 @@ const restrictAccess = (req, res, next) => {
     "http://localhost:5000",
   ];
 
-  console.log(req.headers.host);
-
-  if (!origin || req.headers.host == "localhost:3000") {
-    console.log(`Access granted for localhost`);
-    res.status(200).send(`Access granted for localhost`);
-  } else if (origin && allowedOrigins.some((allowedOrigin) => origin.startsWith(allowedOrigin))) {
-    console.log(`Access granted for origin: ${origin}`);
-    res.status(200).send(`Access granted for origin: ${origin}`);
+  if (origin && allowedOrigins.some((allowedOrigin) => origin.startsWith(allowedOrigin))) {
+    res.send(`Access granted for origin: ${origin}`);
   } else {
-    console.log(`Access denied for origin: ${origin}`);
-    res.status(403).send(`Access Denied: This ${origin} is not allowed access.`);
+    res.status(403).send(`Access Denied: The origin ${origin || "undefined"} is not allowed access.`);
   }
 };
 
