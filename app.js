@@ -14,7 +14,7 @@ const restrictAccess = (req, res, next) => {
   const origin = req.headers.origin || req.headers.referer;
   const allowedOrigins = [
     "https://fife-porpoise-xrrg.squarespace.com/home",
-    "hhttps://tfoa-test.onrender.com",
+    "https://tfoa-test.onrender.com",
     "http://localhost:3000",
     "http://localhost:5000",
     "localhost:3000",
