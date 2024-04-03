@@ -38,10 +38,12 @@ const restrictAccess = (req, res, next) => {
 
   // Allow if origin is in the allowed list or if it's a local development check
   if (allowedOrigins.includes(origin) || (origin === undefined && req.headers.host.includes("localhost"))) {
+    res.send(`Access Granted: Origin is ${origin}.`);
+
     next();
   } else {
     // If origin is not allowed, send an appropriate message without proceeding
-    res.status(403).send("Access Denied: Your origin is not allowed.");
+    res.status(403).send(`Access Denied: Your ${origin} is not allowed.`);
   }
 };
 
