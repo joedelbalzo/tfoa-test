@@ -12,25 +12,25 @@ app.use(bodyParser.urlencoded({ extended: false }));
 
 const restrictAccess = (req, res, next) => {
   const origin = req.headers.origin || req.headers.referer;
+  console.log(`Origin: ${origin}`);
   const allowedOrigins = [
-    "https://fife-porpoise-xrrg.squarespace.com/home",
+    "https://fife-porpoise-xrrg.squarespace.com",
     "https://tfoa-test.onrender.com",
     "http://localhost:3000",
     "http://localhost:5000",
-    "localhost:3000",
-    "localhost:5000",
   ];
-  if (process.env.DEV_SITE) {
-    allowedOrigins.push(process.env.DEV_SITE);
-  }
 
-  if (req.headers.host == "localhost:3000") {
-    res.status(200).send("Access granted. Enter your code where you're supposed to enter it.");
-    next();
+  console.log(req.headers.host);
+
+  if (!origin || req.headers.host == "localhost:3000") {
+    console.log(`Access granted for localhost`);
+    res.status(200).send(`Access granted for localhost`);
   } else if (origin && allowedOrigins.some((allowedOrigin) => origin.startsWith(allowedOrigin))) {
-    next();
+    console.log(`Access granted for origin: ${origin}`);
+    res.status(200).send(`Access granted for origin: ${origin}`);
   } else {
-    res.status(403).send("Access Denied: This origin is not allowed access.");
+    console.log(`Access denied for origin: ${origin}`);
+    res.status(403).send(`Access Denied: This ${origin} is not allowed access.`);
   }
 };
 
