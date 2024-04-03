@@ -10,6 +10,22 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
+// const restrictAccess = (req, res, next) => {
+//   const origin = req.headers.origin || req.headers.referer;
+
+//   const allowedOrigins = [
+//     "https://fife-porpoise-xrrg.squarespace.com",
+//     "https://tfoa-test.onrender.com",
+//     "http://localhost:3000",
+//     "http://localhost:5000",
+//   ];
+
+//   if (origin && allowedOrigins.some((allowedOrigin) => origin.startsWith(allowedOrigin))) {
+//     res.send(`Access granted for origin: ${origin}`);
+//   } else {
+//     res.status(403).send(`Access Denied: The origin ${origin || "undefined"} is not allowed access.`);
+//   }
+// };
 const restrictAccess = (req, res, next) => {
   const origin = req.headers.origin || req.headers.referer;
 
@@ -20,10 +36,12 @@ const restrictAccess = (req, res, next) => {
     "http://localhost:5000",
   ];
 
-  if (origin && allowedOrigins.some((allowedOrigin) => origin.startsWith(allowedOrigin))) {
-    res.send(`Access granted for origin: ${origin}`);
+  // Allow if origin is in the allowed list or if it's a local development check
+  if (allowedOrigins.includes(origin) || (origin === undefined && req.headers.host.includes("localhost"))) {
+    next();
   } else {
-    res.status(403).send(`Access Denied: The origin ${origin || "undefined"} is not allowed access.`);
+    // If origin is not allowed, send an appropriate message without proceeding
+    res.status(403).send("Access Denied: Your origin is not allowed.");
   }
 };
 
