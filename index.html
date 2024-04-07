@@ -23,13 +23,18 @@
       console.log(couponCode);
       const response = await fetch(`/api/coupon-codes/${encodeURIComponent(couponCode)}`, {
         method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
       });
       const data = await response;
       console.log(data, "response");
       if (response.ok) {
         document.getElementById("responseDiv").textContent = "You have a coupon!";
+        window.location.href = "https://fife-porpoise-xrrg.squarespace.com/coupon-success-9341705175250";
       } else {
         document.getElementById("responseDiv").textContent = "You have an invalid coupon";
+        window.location.href = "https://fife-porpoise-xrrg.squarespace.com/coupon-fail";
       }
     });
   </script>

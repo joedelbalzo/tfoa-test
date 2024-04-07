@@ -3,6 +3,8 @@ const app = express();
 const path = require("path");
 const cors = require("cors");
 const bodyParser = require("body-parser");
+const couponRoutes = require("./api/coupon-codes/coupon-codes-routes");
+const { restrictAccess } = require("./middleware/coupon-middleware");
 
 app.use(express.json());
 app.use(cors());
@@ -13,15 +15,6 @@ app.get("/", function (req, res) {
   res.sendFile(path.join(__dirname, "/index.html"));
 });
 
-app.use("/api/coupon-codes", require("./api/coupon-codes-routes"));
+app.use("/api/coupon-codes", restrictAccess, couponRoutes);
 
-const init = async () => {
-  try {
-    const port = process.env.PORT || 3000;
-    const server = app.listen(port, () => console.log(`listening on port ${port}`));
-  } catch (ex) {
-    console.log(ex);
-  }
-};
-
-init();
+module.exports = app;
