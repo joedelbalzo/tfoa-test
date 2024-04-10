@@ -10,18 +10,52 @@
   <body>
     <h1>Test</h1>
     <form id="couponForm">
-      Enter a Coupon Code
+      Enter a Coupon Code.
+      <p>tip: 666-01 is a working code</p>
       <input type="text" id="couponCode" name="couponCode" />
       <button type="submit">Submit</button>
     </form>
     <div id="responseDiv"></div>
   </body>
   <script>
+    //database warmer
+    const url = "https://tfoa-test.onrender.com";
+    fetch(url, {
+      method: "GET",
+    });
+    // local storage test
+    function storageAvailable(type) {
+      let storage;
+      try {
+        storage = window[type];
+        const x = "__storage_test__";
+        storage.setItem(x, x);
+        storage.removeItem(x);
+        return true;
+      } catch (e) {
+        return (
+          e instanceof DOMException &&
+          // everything except Firefox
+          (e.code === 22 ||
+            // Firefox
+            e.code === 1014 ||
+            // test name field too, because code might not be present
+            // everything except Firefox
+            e.name === "QuotaExceededError" ||
+            // Firefox
+            e.name === "NS_ERROR_DOM_QUOTA_REACHED") &&
+          // acknowledge QuotaExceededError only if there's something already stored
+          storage &&
+          storage.length !== 0
+        );
+      }
+    }
+
     document.getElementById("couponForm").addEventListener("submit", async function (e) {
       e.preventDefault();
       const couponCode = document.getElementById("couponCode").value;
       console.log(couponCode);
-      const response = await fetch(`/api/coupon-codes/${encodeURIComponent(couponCode)}`, {
+      const response = await fetch(`${url}/api/coupon-codes/${encodeURIComponent(couponCode)}`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -30,8 +64,13 @@
       const data = await response;
       console.log(data, "response");
       if (response.ok) {
-        document.getElementById("responseDiv").textContent = "You have a coupon!";
-        window.location.href = "https://fife-porpoise-xrrg.squarespace.com/coupon-success-9341705175250";
+        if (storageAvailable("localStorage")) {
+          localStorage.setItem("coupon", true);
+          document.getElementById("responseDiv").textContent = "You have a coupon!";
+          window.location.href = "https://fife-porpoise-xrrg.squarespace.com/coupon-success-9341705175250";
+        } else {
+          window.location.href = "https://fife-porpoise-xrrg.squarespace.com/coupon-valid-but-wompwomp";
+        }
       } else {
         document.getElementById("responseDiv").textContent = "You have an invalid coupon";
         window.location.href = "https://fife-porpoise-xrrg.squarespace.com/coupon-fail";
