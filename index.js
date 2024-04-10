@@ -1,5 +1,5 @@
 const app = require("./app");
-const conn = require("./db/conn");
+// const conn = require("./db/conn");
 
 const init = async () => {
   try {
