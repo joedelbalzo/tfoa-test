@@ -6,7 +6,9 @@ const couponRoutes: Router = express.Router();
 
 couponRoutes.get("/", async (req: Request, res: Response, next: NextFunction) => {
   try {
-    console.log("get codes!");
+    if (req.params.id) {
+      console.log("get codes");
+    }
     res.send(couponCodes);
   } catch (err) {
     console.error(err);

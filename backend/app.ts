@@ -1,4 +1,4 @@
-import express, { Express, Request, Response } from "express";
+import express, { Express, Response } from "express";
 import path from "path";
 import cors from "cors";
 import bodyParser from "body-parser";
@@ -20,7 +20,7 @@ app.use(
   couponRoutes
 );
 
-app.get("*", (req: Request, res: Response) => {
+app.get("*", (res: Response) => {
   res.sendFile(path.join(__dirname, "../frontend/dist", "index.html"));
 });
 
