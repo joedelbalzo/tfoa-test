@@ -1,8 +1,9 @@
-const path = require("path");
+import path from "path";
+import dotenv from "dotenv";
 
-require("dotenv").config({ path: path.resolve(__dirname, "../../", ".env") });
+dotenv.config({ path: path.resolve(__dirname, "../../", ".env") });
 
-const couponCodes = [
+const couponCodes: string[] = [
   `${process.env.COUPON}-01`,
   `${process.env.COUPON}-02`,
   `${process.env.COUPON}-03`,
@@ -12,4 +13,4 @@ const couponCodes = [
   `${process.env.COUPON}-07`,
 ];
 
-module.exports = couponCodes;
+export default couponCodes;
