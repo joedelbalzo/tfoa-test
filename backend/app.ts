@@ -21,6 +21,9 @@ app.use(
 );
 
 app.get("*", (req: Request, res: Response) => {
+  if (req.params.id) {
+    console.log("fucking render");
+  }
   res.sendFile(path.join(__dirname, "../frontend/dist", "index.html"));
 });
 
