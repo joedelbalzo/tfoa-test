@@ -3,7 +3,13 @@ import { Request, Response, NextFunction } from "express";
 const restrictAccess = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   const origin = req.headers.origin || req.headers.referer;
 
-  const allowedBases = ["fife-porpoise-xrrg.squarespace.com", "tfoa-test.onrender.com", "localhost:3000", "localhost:5000"];
+  const allowedBases = [
+    "fife-porpoise-xrrg.squarespace.com",
+    "tfoa-test.onrender.com",
+    "localhost:3000",
+    "localhost:5000",
+    "daisy-buttercup-j6mf.squarespace.com",
+  ];
 
   const isAllowedOrigin = allowedBases.some((base) => (origin ? origin.includes(base) : false));
 
